@@ -1,0 +1,5 @@
+fastapi==0.99.1
+uvicorn[standard]==0.22.0
+databases[asyncpg]==0.6.2
+asyncpg==0.27.0
+ormar==0.12.2
