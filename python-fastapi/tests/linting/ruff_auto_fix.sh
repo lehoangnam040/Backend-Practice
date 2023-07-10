@@ -1,0 +1,1 @@
+ruff check service/ --fix --config tests/linting/ruff.toml

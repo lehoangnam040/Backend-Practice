@@ -3,6 +3,7 @@ import logging
 
 from fastapi import FastAPI
 
+from service import __version__
 from service.configs.exceptions import setup_exception_handlers
 from service.configs.setting import settings_factory
 from service.controller.logopt import logopt_router
@@ -15,7 +16,7 @@ from service.repository.postgres import (
 settings = settings_factory()
 logging.getLogger().setLevel(logging.INFO)
 logging.info("App settings %s", settings)
-app = FastAPI()
+app = FastAPI(version=__version__)
 
 setup_exception_handlers(app)
 setup_pg_database_connection(app)
