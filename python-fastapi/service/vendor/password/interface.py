@@ -6,12 +6,12 @@ class PasswordHasherInterface(Protocol):
     def hash_password(
         self: "PasswordHasherInterface",
         password: str,
-    ) -> tuple[Exception | None, str | None]:
+    ) -> str:
         ...
 
     def verify_hashed_password(
         self: "PasswordHasherInterface",
         password: str,
         hashed_password: str,
-    ) -> tuple[Exception | None, bool | None]:
+    ) -> bool:
         ...

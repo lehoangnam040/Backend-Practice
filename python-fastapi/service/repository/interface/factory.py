@@ -23,4 +23,4 @@ class RepositoryFactory:
             )
 
             return PgAccountRepository()
-        raise NotImplementedError()
+        raise NotImplementedError

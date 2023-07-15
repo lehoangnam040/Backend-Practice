@@ -1,5 +1,6 @@
-from typing import TypeVar, Optional, Tuple
+from typing import TypeVar
+
 from .errors import ServiceError
 
 T = TypeVar("T")
-ResultWithErr = Tuple[Optional[T], Optional[ServiceError]]
+ResultWithErr = tuple[T | None, ServiceError | None]

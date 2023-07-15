@@ -6,7 +6,7 @@ def _factory(using: str) -> PasswordHasherInterface:
         from .bcrypt import BcryptPasslibPasswordHasher
 
         return BcryptPasslibPasswordHasher()
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 password_hasher = _factory("bcrypt")

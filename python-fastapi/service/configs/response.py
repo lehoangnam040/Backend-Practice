@@ -7,22 +7,20 @@ from pydantic.generics import GenericModel
 DataType = TypeVar("DataType")
 
 
-class BaseApiResponse(BaseModel):
-
-    """Basic response of every api."""
-
+class ErrorApiResponse(BaseModel):
     code: str
     message: str
+    debug_id: str
 
 
-class SingleApiResponse(BaseApiResponse, GenericModel, Generic[DataType]):
+class SingleApiResponse(GenericModel, Generic[DataType]):
 
     """Api with response only 1 item."""
 
     item: DataType | None = None
 
 
-class ListApiResponse(BaseApiResponse, GenericModel, Generic[DataType]):
+class ListApiResponse(GenericModel, Generic[DataType]):
 
     """Api with response a list of items."""
 

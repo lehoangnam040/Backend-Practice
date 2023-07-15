@@ -1,6 +1,14 @@
-from pydantic import BaseModel
-from pydantic.errors import DictError
+import sys
 
+from pydantic import BaseModel
+
+from service.configs.errors import (
+    DebugError,
+    ServiceError,
+    ServiceErrorCode,
+    trace_debugs,
+)
+from service.configs.typing_compat import ResultWithErr
 from service.repository import account_repository
 from service.repository.interface.account import AccountRepository
 from service.vendor.password import password_hasher
@@ -35,27 +43,39 @@ class LoginService:
     async def login_by_username_password(
         self: "LoginService",
         request: LoginV1RequestBody,
-    ) -> tuple[Exception | None, LoginV1ResponseBody | None]:
-        account, err = await self.account_repository.get_an_account_by_username(
-            request.username,
-        )
-        if err is not None:
-            return Exception("not found"), None
-        if account is None:
-            return Exception("not found"), None
-        err, success = self.password_hasher.verify_hashed_password(
-            request.password,
-            account.hashed_password,
-        )
-        if err is not None:
-            return Exception("password not same"), None
-        if not success:
-            return Exception("verify password failed"), None
+    ) -> ResultWithErr[LoginV1ResponseBody]:
+        try:
+            account = await self.account_repository.get_an_account_by_username(
+                request.username,
+            )
+        except Exception:
+            linenos = trace_debugs(*sys.exc_info())
+            return None, ServiceError(
+                code=ServiceErrorCode.INCORRECT_USERNAME_PASSWORD,
+                debug_id=f"{DebugError.NOT_FOUND_ON_DB}:{linenos}",
+            )
 
         try:
-            return None, LoginV1ResponseBody.validate(account)
-        except (DictError, Exception) as err:
-            return err, None
+            success = self.password_hasher.verify_hashed_password(
+                request.password,
+                account.hashed_password,
+            )
+            assert success is True
+        except Exception:
+            linenos = trace_debugs(*sys.exc_info())
+            return None, ServiceError(
+                code=ServiceErrorCode.INCORRECT_USERNAME_PASSWORD,
+                debug_id=f"{DebugError.PASSWORD_VERIFY_FAILED}:{linenos}",
+            )
+
+        try:
+            return LoginV1ResponseBody.validate(account), None
+        except Exception:
+            linenos = trace_debugs(*sys.exc_info())
+            return None, ServiceError(
+                code=ServiceErrorCode.TECHNICAL_ERROR,
+                debug_id=f"{DebugError.PYDANTIC_VALIDATE_FAILED}:{linenos}",
+            )
 
 
 login_v1_service = LoginService(account_repository, password_hasher)
