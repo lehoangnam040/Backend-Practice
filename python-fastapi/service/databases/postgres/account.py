@@ -1,7 +1,7 @@
 """Data Access Object working with table `account`."""
 import ormar
 
-from service.repository.postgres import database, metadata
+from . import database, metadata
 
 
 class PgAccount(ormar.Model):

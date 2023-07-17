@@ -1,6 +1,6 @@
 from typing import Protocol, runtime_checkable
 
-from service.models.account import Account
+from .entity import Account
 
 
 @runtime_checkable

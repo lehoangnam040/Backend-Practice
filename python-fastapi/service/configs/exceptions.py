@@ -21,8 +21,8 @@ async def http_exception_handler(_: Request, exc: HttpServiceException) -> JSONR
         status_code=exc.status_code,
         content=jsonable_encoder(
             ErrorApiResponse(
-                code=exc.error.code.name,
-                message=exc.error.code.value,
+                code=exc.error.error.name,
+                message=exc.error.error.value,
                 debug_id=exc.error.debug_id,
             ),
         ),

@@ -5,10 +5,9 @@ import databases
 import sqlalchemy
 from fastapi import FastAPI
 
-from service.configs.setting import settings_factory
+from service.configs.setting import SETTINGS
 
-settings = settings_factory()
-DB_URL = f"postgresql://{settings.db_user}:{settings.db_pass.get_secret_value()}@{settings.db_host}:{settings.db_port}/{settings.db_name}"
+DB_URL = f"postgresql://{SETTINGS.db_user}:{SETTINGS.db_pass.get_secret_value()}@{SETTINGS.db_host}:{SETTINGS.db_port}/{SETTINGS.db_name}"
 metadata = sqlalchemy.MetaData()
 database = databases.Database(DB_URL)
 

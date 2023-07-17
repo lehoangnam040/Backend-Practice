@@ -1,7 +1,11 @@
-from enum import Enum, StrEnum
+import typing
+from enum import Enum
 from types import TracebackType
 
 from pydantic import BaseModel
+
+if typing.TYPE_CHECKING:
+    from .typing_compat import EnumerationT
 
 
 def trace_debugs(
@@ -20,19 +24,29 @@ def trace_debugs(
 
 
 class ServiceError(BaseModel):
-    code: Enum
+    error: Enum
     debug_id: str
 
 
-class ServiceErrorCode(Enum):
-    INCORRECT_USERNAME_PASSWORD = "Incorrect username or password"
-    TECHNICAL_ERROR = "Oops, something went wrong. Please try again later"
+error_codes = set()
 
 
-class DebugError(StrEnum):
-    # repository
-    NOT_FOUND_ON_DB = "R1001"
+def service_error_enum_unique(enumeration: "EnumerationT") -> "EnumerationT":
+    for name, member in enumeration.__members__.items():
+        if member.name in error_codes:
+            msg = f"duplicate values found in {enumeration!r}: {name}"
+            raise ValueError(msg)
+        error_codes.add(member.name)
+    return enumeration
 
-    # vendor
-    PYDANTIC_VALIDATE_FAILED = "V1001"
-    PASSWORD_VERIFY_FAILED = "V1002"
+
+debug_errors = set()
+
+
+def debug_error_enum_unique(enumeration: "EnumerationT") -> "EnumerationT":
+    for name, member in enumeration.__members__.items():
+        if member.value in debug_errors:
+            msg = f"duplicate values found in {enumeration!r}: {name}"
+            raise ValueError(msg)
+        debug_errors.add(member.name)
+    return enumeration

@@ -1,6 +1,6 @@
-from service.models.account import Account
+from service.databases.postgres.account import PgAccount
 
-from .dao import PgAccount
+from .entity import Account
 
 
 class PgAccountRepository:

@@ -1,5 +1,4 @@
 """Global app settings."""
-from functools import lru_cache
 
 from pydantic import BaseSettings, SecretStr
 
@@ -23,7 +22,4 @@ class Settings(BaseSettings):
         env_prefix = "SERVICE_"
 
 
-@lru_cache
-def settings_factory() -> Settings:
-    """Singleton of app's settings."""
-    return Settings()
+SETTINGS = Settings()
