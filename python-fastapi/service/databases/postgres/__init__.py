@@ -2,6 +2,7 @@
 import typing
 
 import databases
+import ormar
 import sqlalchemy
 from fastapi import FastAPI
 
@@ -10,6 +11,10 @@ from service.configs.setting import SETTINGS
 DB_URL = f"postgresql://{SETTINGS.db_user}:{SETTINGS.db_pass.get_secret_value()}@{SETTINGS.db_host}:{SETTINGS.db_port}/{SETTINGS.db_name}"
 metadata = sqlalchemy.MetaData()
 database = databases.Database(DB_URL)
+
+class PgBaseMeta(ormar.ModelMeta):
+    database = database
+    metadata = metadata
 
 
 def setup_pg_database_connection(app: FastAPI) -> None:

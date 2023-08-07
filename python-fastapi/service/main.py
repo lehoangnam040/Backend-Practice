@@ -7,6 +7,7 @@ from service import __version__
 from service.configs.exceptions import setup_exception_handlers
 from service.configs.setting import SETTINGS
 from service.controller.logopt import logopt_router
+from service.controller.product import product_router
 from service.databases.postgres import (
     connect_pg_database,
     disconnect_pg_database,
@@ -21,7 +22,7 @@ setup_exception_handlers(app)
 setup_pg_database_connection(app)
 
 app.include_router(logopt_router, prefix="/logopt")
-
+app.include_router(product_router)
 
 @app.on_event("startup")
 async def startup() -> None:

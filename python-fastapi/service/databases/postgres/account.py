@@ -1,20 +1,18 @@
 """Data Access Object working with table `account`."""
 import ormar
 
-from . import database, metadata
+from . import PgBaseMeta
 
 
 class PgAccount(ormar.Model):
 
     """Data Access Object working with table `account`."""
 
-    class Meta:
+    class Meta(PgBaseMeta):
 
         """Metadata of `PgAccount`."""
 
         tablename = "account"
-        metadata = metadata
-        database = database
 
     uid = ormar.BigInteger(autoincrement=False, primary_key=True)
     username = ormar.String(max_length=64, unique=True)

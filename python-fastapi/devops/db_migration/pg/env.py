@@ -1,11 +1,11 @@
+import os
+import sys
+from glob import glob
+from importlib import util
 from logging.config import fileConfig
 
-# from sqlalchemy import engine_from_config
-# from sqlalchemy import pool
-from sqlalchemy import create_engine
-
 from alembic import context
-import sys, os
+from sqlalchemy import create_engine
 
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + "/../../../")
@@ -21,16 +21,21 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-from service.repository.postgres.account.dao import metadata
-from service.repository.postgres import DB_URL
+from service.databases.postgres import DB_URL, metadata
+from service.databases.postgres import account, product
 
+# def import_submodules(start_path: str):
+#     start_path = os.path.abspath(start_path)
+#     py_files = [f for f in glob(os.path.join(start_path, "*.py"))] # if not f.endswith("__.py")
+#     for py_file in py_files:
+#         spec = util.spec_from_file_location("", py_file)
+#         module = util.module_from_spec(spec)
+#         spec.loader.exec_module(module)
+# import_submodules(myPath + "/../../../service/databases/postgres/")
 target_metadata = metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
 
@@ -46,7 +51,6 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    # url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=DB_URL,
         target_metadata=target_metadata,
@@ -65,17 +69,12 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # connectable = engine_from_config(
-    #     config.get_section(config.config_ini_section),
-    #     prefix="sqlalchemy.",
-    #     poolclass=pool.NullPool,
-    # )
     print(DB_URL)
     connectable = create_engine(DB_URL)
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,
         )
 
         with context.begin_transaction():
