@@ -3,6 +3,17 @@
 from pydantic import BaseSettings, SecretStr
 
 
+class GoogleSettings(BaseSettings):
+
+    client_id: str = "..."
+    login_uri: str = "http://localhost:8000/auth"
+
+    class Config:
+
+        """Config of settings."""
+
+        env_prefix = "GOOGLE_"
+
 class Settings(BaseSettings):
 
     """Global app settings."""
@@ -15,11 +26,14 @@ class Settings(BaseSettings):
     db_pass: SecretStr = SecretStr("postgres")
     db_name: str = "service-db"
 
+    google_settings = GoogleSettings()
+
     class Config:
 
         """Config of settings."""
 
         env_prefix = "SERVICE_"
+
 
 
 SETTINGS = Settings()

@@ -4,3 +4,7 @@ databases[asyncpg]==0.6.2
 asyncpg==0.27.0
 passlib[bcrypt]==1.7.4
 ormar==0.12.2
+google-auth-oauthlib==1.0.0
+CacheControl==0.13.1
+Jinja2==3.1.2
+python-multipart==0.0.6
