@@ -8,14 +8,19 @@ from service.configs.response import ErrorApiResponse
 from .errors import ServiceError
 
 
-class HttpServiceException(RuntimeError):
-    def __init__(self, *args: object, status_code: int, error: ServiceError) -> None:
+class HttpServiceError(RuntimeError):
+    def __init__(
+        self: "HttpServiceError",
+        *args: object,
+        status_code: int,
+        error: ServiceError,
+    ) -> None:
         super().__init__(*args)
         self.status_code = status_code
         self.error = error
 
 
-async def http_exception_handler(_: Request, exc: HttpServiceException) -> JSONResponse:
+async def http_exception_handler(_: Request, exc: HttpServiceError) -> JSONResponse:
     """Handle when `HTTPException` happened."""
     return JSONResponse(
         status_code=exc.status_code,
@@ -31,4 +36,4 @@ async def http_exception_handler(_: Request, exc: HttpServiceException) -> JSONR
 
 def setup_exception_handlers(app: FastAPI) -> None:
     """Map all handle to corresponding exceptions."""
-    app.add_exception_handler(HttpServiceException, http_exception_handler)
+    app.add_exception_handler(HttpServiceError, http_exception_handler)

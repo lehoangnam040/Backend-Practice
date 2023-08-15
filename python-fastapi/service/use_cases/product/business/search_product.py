@@ -27,7 +27,10 @@ class SearchProduct:
         request: SearchProductRequest,
     ) -> ResultWithErr[list[SearchProductResponse]]:
         try:
-            products = await self.repository.search_products_by_name(request.search, request.cursor_next)
+            products = await self.repository.search_products_by_name(
+                request.search,
+                request.cursor_next,
+            )
             return parse_obj_as(list[SearchProductResponse], products), None
         except Exception:
             linenos = trace_debugs(*sys.exc_info())

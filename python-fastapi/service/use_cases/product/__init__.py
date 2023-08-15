@@ -1,4 +1,3 @@
-
 from service.configs.repository import SupportedDbType
 
 from .business.search_product import SearchProduct

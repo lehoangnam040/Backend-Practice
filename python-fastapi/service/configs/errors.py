@@ -14,12 +14,9 @@ def trace_debugs(
     tb: TracebackType | None,
 ) -> str:
     linenos = []
-    print("===============================")
     while tb:
-        print(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name, tb.tb_lineno)
         linenos.append(tb.tb_lineno)
         tb = tb.tb_next
-    print("===============================")
     return ".".join(map(str, linenos))
 
 

@@ -1,4 +1,3 @@
-
 from pydantic import parse_obj_as
 
 from service.databases.postgres.product import PgProduct
@@ -12,9 +11,13 @@ class PgProductRepository:
         name: str,
         cursor_next: int,
     ) -> list[Product]:
-        query = PgProduct.objects.filter(
-            product_name__icontains=name,
-        ).order_by(PgProduct.pid.desc()).limit(10)
+        query = (
+            PgProduct.objects.filter(
+                product_name__icontains=name,
+            )
+            .order_by(PgProduct.pid.desc())
+            .limit(10)
+        )
         if not cursor_next:
             pg_products = await query.all()
         else:

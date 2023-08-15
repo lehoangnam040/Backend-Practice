@@ -9,5 +9,8 @@ class AccountRepository(Protocol):
         self: "AccountRepository",
         username: str,
     ) -> Account:
-        """Get account from database by unique username. If any reason causes multiple username, return first result."""
+        """Get account from database by unique username.
+
+        If any reason causes multiple username, return first result.
+        """
         ...

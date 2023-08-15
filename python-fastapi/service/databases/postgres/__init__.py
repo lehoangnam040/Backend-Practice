@@ -12,6 +12,7 @@ DB_URL = f"postgresql://{SETTINGS.db_user}:{SETTINGS.db_pass.get_secret_value()}
 metadata = sqlalchemy.MetaData()
 database = databases.Database(DB_URL)
 
+
 class PgBaseMeta(ormar.ModelMeta):
     database = database
     metadata = metadata

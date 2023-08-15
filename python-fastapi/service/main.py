@@ -24,6 +24,7 @@ setup_pg_database_connection(app)
 app.include_router(logopt_router, prefix="/logopt")
 app.include_router(product_router)
 
+
 @app.on_event("startup")
 async def startup() -> None:
     """Run when starting service."""

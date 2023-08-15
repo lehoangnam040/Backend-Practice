@@ -9,6 +9,5 @@ class ErrorCode(Enum):
 
 @debug_error_enum_unique
 class DebugError(StrEnum):
-
     # vendor
     PYDANTIC_VALIDATE_FAILED = "V1003"

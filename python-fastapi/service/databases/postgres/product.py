@@ -5,7 +5,6 @@ from . import PgBaseMeta
 
 
 class PgProduct(ormar.Model):
-
     class Meta(PgBaseMeta):
         tablename = "product"
 
