@@ -29,10 +29,11 @@ class Business:
         self: "Business",
         credential: str,
     ) -> ResultWithErr[AuthResponse]:
-
         try:
             # sub, email, email_verified, picture, given_name, locale
-            idinfo: dict[str, typing.Any] = id_token.verify_oauth2_token(credential, Request(session=self.cached_session), self.google_client_id)
+            idinfo: dict[str, typing.Any] = id_token.verify_oauth2_token(
+                credential, Request(session=self.cached_session), self.google_client_id
+            )
         except Exception:
             linenos = trace_debugs(*sys.exc_info())
             return None, ServiceError(
@@ -40,7 +41,10 @@ class Business:
                 debug_id=f"{DebugError.ERROR_VALIDATE_GOOGLE}:{linenos}",
             )
 
-        return AuthResponse(
-            uid=idinfo["sub"],
-            username=idinfo["email"],
-        ), None
+        return (
+            AuthResponse(
+                uid=idinfo["sub"],
+                username=idinfo["email"],
+            ),
+            None,
+        )

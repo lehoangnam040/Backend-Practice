@@ -12,4 +12,3 @@ class ErrorCode(Enum):
 class DebugError(StrEnum):
     # repository
     ERROR_VALIDATE_GOOGLE = "V1003"
-

@@ -20,9 +20,15 @@ router = APIRouter()
 async def login_google_v1(
     request: Request,
 ) -> Response:
-    return TEMPLATES.TemplateResponse("google.html", {
-        "request": request, "client_id": SETTINGS.google_settings.client_id, "login_uri": SETTINGS.google_settings.login_uri,
-    })
+    return TEMPLATES.TemplateResponse(
+        "google.html",
+        {
+            "request": request,
+            "client_id": SETTINGS.google_settings.client_id,
+            "login_uri": SETTINGS.google_settings.login_uri,
+        },
+    )
+
 
 @router.post(
     "/auth",
