@@ -8,8 +8,8 @@ import (
 
 func NewHealthRouter(routerGroup *gin.RouterGroup) {
 
-	healthController := &controller.HealthV1Controller{}
+	healthController := &controller.HealthController{}
 
-	routerGroup.GET("v1/health/check", healthController.Check)
-	routerGroup.GET("v1/health/ready", healthController.Ready)
+	routerGroup.GET("/health/check", healthController.Check)
+	routerGroup.GET("/health/ready", healthController.Ready)
 }

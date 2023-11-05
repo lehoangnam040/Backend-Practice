@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"myservice/m/internal/app/adapter/restful/router"
 	"myservice/m/internal/app/config"
+	"runtime"
 
 	"github.com/gin-gonic/gin"
 )
+
+func init() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+}
 
 func main() {
 

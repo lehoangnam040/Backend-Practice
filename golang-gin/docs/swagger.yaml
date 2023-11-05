@@ -1,0 +1,70 @@
+definitions:
+  controller.airportDto:
+    properties:
+      code:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /health/check:
+    get:
+      consumes:
+      - application/json
+      description: do health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+            type: object
+      summary: health check
+      tags:
+      - health
+  /health/ready:
+    get:
+      consumes:
+      - application/json
+      description: do health ready
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+            type: object
+      summary: health ready
+      tags:
+      - health
+  /v1/airports:
+    get:
+      consumes:
+      - application/json
+      description: list airports desc
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              items:
+                $ref: '#/definitions/controller.airportDto'
+            type: object
+      summary: list airports
+      tags:
+      - airport
+swagger: "2.0"
