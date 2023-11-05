@@ -7,7 +7,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// Swagger docs
-	_ "myservice/m/docs"
+	_ "myservice/m/api"
 )
 
 func NewDocsRouter(routerGroup *gin.RouterGroup) {

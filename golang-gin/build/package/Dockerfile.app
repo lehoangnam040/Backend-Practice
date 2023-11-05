@@ -1,0 +1,20 @@
+FROM golang:1.21-alpine3.17 AS buildenv
+
+LABEL maintainer="NamLH <lehoangnam040@gmail.com>"
+
+ENV GO111MODULE=on
+
+WORKDIR /app
+ADD . /app
+
+RUN go mod download
+RUN go mod verify
+
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o /go/bin/app ./cmd/app/main.go
+
+FROM scratch
+COPY --from=buildenv /go/bin/app /go/bin/app
+
+ENV GIN_MODE release
+EXPOSE 8000
+ENTRYPOINT ["/go/bin/app"]
