@@ -9,6 +9,11 @@ import (
 	"github.com/jinzhu/copier"
 )
 
+type AirportSearchParams struct {
+	Search     string `json:"search" form:"search"`
+	CursorNext int64  `json:"cursor_next" form:"cursor_next"`
+}
+
 type airportDto struct {
 	Id   int64  `json:"id"`
 	Code string `json:"code"`
@@ -16,7 +21,7 @@ type airportDto struct {
 }
 
 type AirportV1Controller struct {
-	listUc usecase.AirportListUc
+	ListUc *usecase.AirportListUc
 }
 
 // GetListAirport godoc
@@ -24,13 +29,18 @@ type AirportV1Controller struct {
 // @Schemes
 // @Description list airports desc
 // @Tags airport
-// @Accept json
 // @Produce json
+// @Param _ query AirportSearchParams false "query filter"
 // @Success 200 {object} object{code=string,items=airportDto}
 // @Router /v1/airports [get]
 func (ctrl *AirportV1Controller) GetList(ctx *gin.Context) {
+	var params AirportSearchParams
+	if err := ctx.ShouldBindQuery(&params); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	airports, err := ctrl.listUc.Logic()
+	airports, err := ctrl.ListUc.Logic(ctx.Request.Context(), params.Search, params.CursorNext)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

@@ -49,9 +49,14 @@ paths:
       - health
   /v1/airports:
     get:
-      consumes:
-      - application/json
       description: list airports desc
+      parameters:
+      - in: query
+        name: cursor_next
+        type: integer
+      - in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:

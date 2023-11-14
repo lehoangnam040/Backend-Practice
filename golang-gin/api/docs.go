@@ -74,9 +74,6 @@ const docTemplate = `{
         "/v1/airports": {
             "get": {
                 "description": "list airports desc",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -84,6 +81,18 @@ const docTemplate = `{
                     "airport"
                 ],
                 "summary": "list airports",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "cursor_next",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

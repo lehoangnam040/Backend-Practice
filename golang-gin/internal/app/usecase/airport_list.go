@@ -1,45 +1,18 @@
 package usecase
 
-import "myservice/m/internal/app/entity"
+import (
+	"context"
+	"myservice/m/internal/app/entity"
+)
 
-type AirportListUc struct{}
+type airportListRepo interface {
+	SearchAirports(context.Context, string, int64) ([]entity.Airport, error)
+}
 
-func (uc *AirportListUc) Logic() ([]entity.Airport, error) {
-	return []entity.Airport{
-		{
-			Id:   1,
-			Code: "HAN",
-			Name: "Noi Bai",
-		},
-		{
-			Id:   2,
-			Code: "SGN",
-			Name: "Tan Son Nhat",
-		},
-		{
-			Id:   3,
-			Code: "PQC",
-			Name: "Phu Quoc",
-		},
-		{
-			Id:   4,
-			Code: "DAD",
-			Name: "Da Nang",
-		},
-		{
-			Id:   5,
-			Code: "CXR",
-			Name: "Cam Ranh",
-		},
-		{
-			Id:   6,
-			Code: "VDO",
-			Name: "Van Don",
-		},
-		{
-			Id:   7,
-			Code: "VCA",
-			Name: "Can Tho",
-		},
-	}, nil
+type AirportListUc struct {
+	Repo airportListRepo
+}
+
+func (uc *AirportListUc) Logic(ctx context.Context, search string, cursorNext int64) ([]entity.Airport, error) {
+	return uc.Repo.SearchAirports(ctx, search, cursorNext)
 }

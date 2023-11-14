@@ -3,7 +3,7 @@
 
 ## Generate docs
 ```
-$ ~/go/bin/swag init -g internal/app/adapter/restful/router/router.go
+$ ~/go/bin/swag init -g internal/app/adapter/restful/router/router.go -o api
 ```
 
 ## Build 
