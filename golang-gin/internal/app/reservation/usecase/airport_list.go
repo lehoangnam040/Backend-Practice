@@ -6,13 +6,16 @@ import (
 )
 
 type airportListRepo interface {
-	SearchAirports(context.Context, string, int64) ([]entity.Airport, error)
+	SearchAirports(context.Context, string) ([]entity.Airport, error)
+}
+
+type airportListCache interface {
 }
 
 type AirportListUc struct {
 	Repo airportListRepo
 }
 
-func (uc *AirportListUc) Logic(ctx context.Context, search string, cursorNext int64) ([]entity.Airport, error) {
-	return uc.Repo.SearchAirports(ctx, search, cursorNext)
+func (uc *AirportListUc) Logic(ctx context.Context, search string) ([]entity.Airport, error) {
+	return uc.Repo.SearchAirports(ctx, search)
 }

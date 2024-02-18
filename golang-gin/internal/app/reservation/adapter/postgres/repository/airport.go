@@ -16,7 +16,7 @@ func New(pg *postgres.Postgres) *PgAirportRepository {
 	return &PgAirportRepository{pg}
 }
 
-func (r *PgAirportRepository) SearchAirports(ctx context.Context, search string, cursorNext int64) ([]entity.Airport, error) {
+func (r *PgAirportRepository) SearchAirports(ctx context.Context, search string) ([]entity.Airport, error) {
 	sql, _, err := r.Builder.
 		Select("id, code, name").
 		From("airport").

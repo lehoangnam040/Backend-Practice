@@ -1,6 +1,10 @@
 version: '3'
 
 services:
+  redis-stack:
+    image: redis/redis-stack-server:7.2.0-v8
+    ports:
+      - 16379:6379
   app:
     image: ginapp
     ports:

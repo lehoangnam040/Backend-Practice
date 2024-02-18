@@ -11,6 +11,13 @@ $ ~/go/bin/swag init -g internal/app/reservation/adapter/restful/router/router.g
 $ docker build -t {tag} -f build/package/Dockerfile.reservation .
 ```
 
+## Data storage
+
+- redis
+```
+$ docker run -tid --rm --name redis-stack-server -p 16379:6379 redis/redis-stack-server:7.2.0-v8
+```
+
 ## Migrations
 - template: internal/app/{app_name}/adapter/{db_name}/migrations/*.sql
 ```
