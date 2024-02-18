@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"myservice/m/internal/app/entity"
+	"myservice/m/internal/app/reservation/entity"
 )
 
 type airportListRepo interface {

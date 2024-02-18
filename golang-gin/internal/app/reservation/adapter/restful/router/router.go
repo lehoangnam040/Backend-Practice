@@ -1,9 +1,9 @@
 package router
 
 import (
-	postgresrepository "myservice/m/internal/app/adapter/postgres_repository"
-	"myservice/m/internal/app/usecase"
-	"myservice/m/pkg/postgres"
+	postgresrepository "myservice/m/internal/app/reservation/adapter/postgres/repository"
+	"myservice/m/internal/app/reservation/usecase"
+	"myservice/m/internal/pkg/postgres"
 
 	"github.com/gin-gonic/gin"
 )

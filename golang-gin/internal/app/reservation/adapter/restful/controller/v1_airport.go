@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"myservice/m/internal/app/usecase"
+	"myservice/m/internal/app/reservation/usecase"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"

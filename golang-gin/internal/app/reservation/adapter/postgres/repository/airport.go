@@ -1,10 +1,10 @@
-package postgresrepository
+package repository
 
 import (
 	"context"
 	"fmt"
-	"myservice/m/internal/app/entity"
-	"myservice/m/pkg/postgres"
+	"myservice/m/internal/app/reservation/entity"
+	"myservice/m/internal/pkg/postgres"
 )
 
 type PgAirportRepository struct {
@@ -32,7 +32,6 @@ func (r *PgAirportRepository) SearchAirports(ctx context.Context, search string,
 	defer rows.Close()
 
 	entities := make([]entity.Airport, 0, 64)
-
 	for rows.Next() {
 		e := entity.Airport{}
 

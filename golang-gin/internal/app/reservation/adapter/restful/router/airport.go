@@ -1,8 +1,8 @@
 package router
 
 import (
-	"myservice/m/internal/app/adapter/restful/controller"
-	"myservice/m/internal/app/usecase"
+	"myservice/m/internal/app/reservation/adapter/restful/controller"
+	"myservice/m/internal/app/reservation/usecase"
 
 	"github.com/gin-gonic/gin"
 )

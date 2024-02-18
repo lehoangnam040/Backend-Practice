@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"myservice/m/internal/app/adapter/restful/router"
-	"myservice/m/internal/app/config"
-	"myservice/m/pkg/postgres"
+	"myservice/m/internal/app/reservation/adapter/restful/router"
+	"myservice/m/internal/config"
+	"myservice/m/internal/pkg/postgres"
 	"runtime"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,6 @@ func main() {
 	}
 
 	// Repository
-	(config.DbPg.Url())
 	pg, err := postgres.New(config.DbPg.Url(), postgres.MaxPoolSize(20))
 	if err != nil {
 		panic(fmt.Errorf("app - Run - postgres.New: %w", err))
