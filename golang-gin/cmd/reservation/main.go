@@ -5,6 +5,7 @@ import (
 	"myservice/m/internal/app/reservation/adapter/restful/router"
 	"myservice/m/internal/config"
 	"myservice/m/internal/pkg/postgres"
+	"myservice/m/internal/pkg/redis"
 	"runtime"
 
 	"github.com/gin-gonic/gin"
@@ -28,8 +29,13 @@ func main() {
 	}
 	defer pg.Close()
 
+	redis, err := redis.New(config.Redis.Url(), config.Redis.Pass, config.Redis.Db)
+	if err != nil {
+		panic(fmt.Errorf("app - Run - redis.New: %w", err))
+	}
+
 	gin := gin.Default()
-	router.Setup(gin, pg)
+	router.Setup(gin, pg, redis)
 
 	gin.Run(config.App.Address)
 }

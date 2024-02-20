@@ -16,18 +16,18 @@ func New(pg *postgres.Postgres) *PgAirportRepository {
 	return &PgAirportRepository{pg}
 }
 
-func (r *PgAirportRepository) SearchAirports(ctx context.Context, search string) ([]entity.Airport, error) {
+func (r *PgAirportRepository) GetAll(ctx context.Context) ([]entity.Airport, error) {
 	sql, _, err := r.Builder.
 		Select("id, code, name").
 		From("airport").
 		ToSql()
 	if err != nil {
-		return nil, fmt.Errorf("PgAirportRepository - SearchAirports - r.Builder: %w", err)
+		return nil, fmt.Errorf("PgAirportRepository - GetAll - r.Builder: %w", err)
 	}
 
 	rows, err := r.Pool.Query(ctx, sql)
 	if err != nil {
-		return nil, fmt.Errorf("PgAirportRepository - SearchAirports - r.Pool.Query: %w", err)
+		return nil, fmt.Errorf("PgAirportRepository - GetAll - r.Pool.Query: %w", err)
 	}
 	defer rows.Close()
 
@@ -37,7 +37,7 @@ func (r *PgAirportRepository) SearchAirports(ctx context.Context, search string)
 
 		err = rows.Scan(&e.Id, &e.Code, &e.Name)
 		if err != nil {
-			return nil, fmt.Errorf("PgAirportRepository - SearchAirports - rows.Scan: %w", err)
+			return nil, fmt.Errorf("PgAirportRepository - GetAll - rows.Scan: %w", err)
 		}
 
 		entities = append(entities, e)

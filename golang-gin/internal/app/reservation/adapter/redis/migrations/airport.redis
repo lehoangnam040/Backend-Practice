@@ -1,0 +1,1 @@
+FT.CREATE idx:reservation_airport ON hash PREFIX 1 "reservation_airport:" SCHEMA id NUMERIC SORTABLE code TEXT name TEXT

@@ -18,13 +18,25 @@ func (c DbPgConfig) Url() string {
 	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", c.User, c.Pass, c.Host, c.Port, c.Name)
 }
 
+type RedisConfig struct {
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
+	Pass string `mapstructure:"pass"`
+	Db   int    `mapstructure:"db"`
+}
+
+func (c RedisConfig) Url() string {
+	return fmt.Sprintf("%s:%s", c.Host, c.Port)
+}
+
 type AppConfig struct {
 	Address string `mapstructure:"address"`
 }
 
 type Config struct {
-	DbPg DbPgConfig
-	App  AppConfig
+	DbPg  DbPgConfig
+	Redis RedisConfig
+	App   AppConfig
 }
 
 func Setup() (*Config, error) {
@@ -32,6 +44,10 @@ func Setup() (*Config, error) {
 	dbViper := viper.New()
 	dbViper.SetEnvPrefix("DB_PG")
 	dbViper.AutomaticEnv()
+
+	redisViper := viper.New()
+	redisViper.SetEnvPrefix("REDIS")
+	redisViper.AutomaticEnv()
 
 	appViper := viper.New()
 	appViper.SetEnvPrefix("APP")
@@ -44,6 +60,12 @@ func Setup() (*Config, error) {
 			User: dbViper.GetString("user"),
 			Pass: dbViper.GetString("pass"),
 			Name: dbViper.GetString("name"),
+		},
+		Redis: RedisConfig{
+			Host: redisViper.GetString("host"),
+			Port: redisViper.GetString("port"),
+			Pass: redisViper.GetString("pass"),
+			Db:   redisViper.GetInt("db"),
 		},
 		App: AppConfig{
 			Address: appViper.GetString("address"),

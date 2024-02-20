@@ -5,17 +5,41 @@ import (
 	"myservice/m/internal/app/reservation/entity"
 )
 
-type airportListRepo interface {
-	SearchAirports(context.Context, string) ([]entity.Airport, error)
+type airportDbRepo interface {
+	GetAll(context.Context) ([]entity.Airport, error)
 }
 
-type airportListCache interface {
+type airportSearchRepo interface {
+	Search(context.Context, string) ([]entity.Airport, error)
+	UpdateCache(context.Context, []entity.Airport) error
 }
 
 type AirportListUc struct {
-	Repo airportListRepo
+	DbRepo     airportDbRepo
+	SearchRepo airportSearchRepo
 }
 
 func (uc *AirportListUc) Logic(ctx context.Context, search string) ([]entity.Airport, error) {
-	return uc.Repo.SearchAirports(ctx, search)
+	airports, err := uc.SearchRepo.Search(ctx, search)
+	if err != nil {
+		return nil, err
+	} else if len(airports) == 0 && search == "" {
+		// read aside
+		if allAirports, err := uc.DbRepo.GetAll(ctx); err != nil {
+			return nil, err
+		} else {
+			if err := uc.SearchRepo.UpdateCache(ctx, allAirports); err != nil {
+				return nil, err
+			}
+			return allAirports, nil
+		}
+	}
+	return airports, nil
+
+	// ONLY DB
+	// if airports, err := uc.DbRepo.GetAll(ctx); err != nil {
+	// 	return nil, err
+	// } else {
+	// 	return airports, nil
+	// }
 }
