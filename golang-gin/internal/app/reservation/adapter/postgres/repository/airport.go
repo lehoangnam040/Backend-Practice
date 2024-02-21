@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"myservice/m/internal/app/reservation/entity"
 	"myservice/m/internal/pkg/postgres"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type PgAirportRepository struct {
@@ -31,17 +33,5 @@ func (r *PgAirportRepository) GetAll(ctx context.Context) ([]entity.Airport, err
 	}
 	defer rows.Close()
 
-	entities := make([]entity.Airport, 0, 64)
-	for rows.Next() {
-		e := entity.Airport{}
-
-		err = rows.Scan(&e.Id, &e.Code, &e.Name)
-		if err != nil {
-			return nil, fmt.Errorf("PgAirportRepository - GetAll - rows.Scan: %w", err)
-		}
-
-		entities = append(entities, e)
-	}
-
-	return entities, nil
+	return pgx.CollectRows[entity.Airport](rows, pgx.RowToStructByNameLax[entity.Airport])
 }

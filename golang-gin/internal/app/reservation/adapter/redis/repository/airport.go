@@ -18,14 +18,14 @@ func New(redis *redis.Redis) *RedisAirportRepository {
 	return &RedisAirportRepository{redis}
 }
 
-func (r *RedisAirportRepository) Search(ctx context.Context, search string, cursorNext int64) ([]entity.Airport, error) {
+func (r *RedisAirportRepository) Search(ctx context.Context, search string, cursorNext int64, limit int) ([]entity.Airport, error) {
 	if search != "" {
 		search = fmt.Sprintf("%%%s%%", search)
 	}
 
 	// cursor rely on id ASC
 	query := fmt.Sprintf("%s @id:[(%d +inf]", search, cursorNext)
-	redisResult, err := r.redis.Client.Do(ctx, "FT.SEARCH", IDX_AIRPORT, query, "LIMIT", 0, 10, "SORTBY", "id", "ASC").Result()
+	redisResult, err := r.redis.Client.Do(ctx, "FT.SEARCH", IDX_AIRPORT, query, "LIMIT", 0, limit, "SORTBY", "id", "ASC").Result()
 	if err != nil {
 		panic(fmt.Errorf("RedisAirportRepository - Search - FT.SEARCH: %w", err))
 	}
