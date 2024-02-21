@@ -10,7 +10,7 @@ type airportDbRepo interface {
 }
 
 type airportSearchRepo interface {
-	Search(context.Context, string) ([]entity.Airport, error)
+	Search(context.Context, string, int64) ([]entity.Airport, error)
 	UpdateCache(context.Context, []entity.Airport) error
 }
 
@@ -19,8 +19,8 @@ type AirportListUc struct {
 	SearchRepo airportSearchRepo
 }
 
-func (uc *AirportListUc) Logic(ctx context.Context, search string) ([]entity.Airport, error) {
-	airports, err := uc.SearchRepo.Search(ctx, search)
+func (uc *AirportListUc) Logic(ctx context.Context, search string, cursorNext int64) ([]entity.Airport, error) {
+	airports, err := uc.SearchRepo.Search(ctx, search, cursorNext)
 	if err != nil {
 		return nil, err
 	} else if len(airports) == 0 && search == "" {

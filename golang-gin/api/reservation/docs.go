@@ -83,6 +83,11 @@ const docTemplate = `{
                 "summary": "list airports",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "name": "cursor_next",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "name": "search",
                         "in": "query"

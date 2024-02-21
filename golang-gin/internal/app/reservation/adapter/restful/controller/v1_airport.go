@@ -10,7 +10,8 @@ import (
 )
 
 type AirportSearchParams struct {
-	Search string `json:"search" form:"search"`
+	Search     string `json:"search" form:"search"`
+	CursorNext int64  `json:"cursor_next" form:"cursor_next"`
 }
 
 type airportDto struct {
@@ -39,7 +40,7 @@ func (ctrl *AirportV1Controller) GetList(ctx *gin.Context) {
 		return
 	}
 
-	airports, err := ctrl.ListUc.Logic(ctx.Request.Context(), params.Search)
+	airports, err := ctrl.ListUc.Logic(ctx.Request.Context(), params.Search, params.CursorNext)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
