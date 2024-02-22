@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package pb;
+
+service Reservation {
+    rpc GetListAirport(GetListAirportRequest) returns (GetListAirportResponse) {}
+}
+
+message Airport {
+    int64 id = 1;
+    string code = 2;
+    string name = 3;
+}
+
+message GetListAirportRequest {
+    string search = 1;
+    int64 cursor_next = 2;
+}
+
+message GetListAirportResponse {
+    repeated Airport aiports = 1;
+}

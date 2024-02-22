@@ -30,7 +30,8 @@ func (c RedisConfig) Url() string {
 }
 
 type AppConfig struct {
-	Address string `mapstructure:"address"`
+	HttpAddress string `mapstructure:"http_address"`
+	GrpcAddress string `mapstructure:"grpc_address"`
 }
 
 type Config struct {
@@ -68,7 +69,8 @@ func Setup() (*Config, error) {
 			Db:   redisViper.GetInt("db"),
 		},
 		App: AppConfig{
-			Address: appViper.GetString("address"),
+			HttpAddress: appViper.GetString("http_address"),
+			GrpcAddress: appViper.GetString("grpc_address"),
 		},
 	}, nil
 }
