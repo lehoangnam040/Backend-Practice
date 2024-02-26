@@ -33,7 +33,7 @@ func main() {
 	}
 	ctx := context.Background()
 
-	pgRepository := postgresrepository.New(pg)
+	pgRepository := postgresrepository.NewPgAirportRepository(pg)
 	airports, err := pgRepository.GetAll(ctx)
 	if err != nil {
 		panic(err)

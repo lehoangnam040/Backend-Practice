@@ -14,7 +14,7 @@ type PgAirportRepository struct {
 }
 
 // New
-func New(pg *postgres.Postgres) *PgAirportRepository {
+func NewPgAirportRepository(pg *postgres.Postgres) *PgAirportRepository {
 	return &PgAirportRepository{pg}
 }
 

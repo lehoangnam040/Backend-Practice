@@ -39,7 +39,7 @@ func main() {
 		panic(fmt.Errorf("app - Run - postgres.New: %w", err))
 	}
 	defer pg.Close()
-	pgRepository := postgresrepository.New(pg)
+	pgRepository := postgresrepository.NewPgAirportRepository(pg)
 
 	redis, err := redis.New(config.Redis.Url(), config.Redis.Pass, config.Redis.Db)
 	if err != nil {
