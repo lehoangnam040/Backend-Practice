@@ -13,8 +13,8 @@ type RedisAirportRepository struct {
 	redis *redis.Redis
 }
 
-// New
-func New(redis *redis.Redis) *RedisAirportRepository {
+// NewRedisAirportRepository
+func NewRedisAirportRepository(redis *redis.Redis) *RedisAirportRepository {
 	return &RedisAirportRepository{redis}
 }
 

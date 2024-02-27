@@ -26,12 +26,12 @@ type TicketV1Controller struct {
 // CreateTicketOptimisticLock godoc
 // @Summary create a ticket
 // @Schemes
-// @Description create a ticket desc
+// @Description create a ticket using optimistic lock desc
 // @Tags ticket
 // @Produce json
 // @Param flight_id path string true "Flight ID"
 // @Success 201 {object} object{code=string,item=ticketDto}
-// @Router /v1/flights/{flight_id}/tickets [post]
+// @Router /v1/flights/{flight_id}/tickets/optimistic [post]
 func (ctrl *TicketV1Controller) CreateTicketOptimisticLock(ctx *gin.Context) {
 	var pathVars CreateTicketUri
 	if err := ctx.ShouldBindUri(&pathVars); err != nil {
@@ -40,6 +40,51 @@ func (ctrl *TicketV1Controller) CreateTicketOptimisticLock(ctx *gin.Context) {
 	}
 
 	ticket, err := ctrl.BookTicketUc.LogicOptimisticLock(ctx.Request.Context(), pathVars.FlightId)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"code": "LogicError",
+		})
+		fmt.Println(err)
+		return
+	}
+
+	dto := ticketDto{}
+	if err = copier.CopyWithOption(&dto, &ticket, copier.Option{
+		CaseSensitive: true,
+		IgnoreEmpty:   true,
+		DeepCopy:      false,
+	}); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"code": "CopyError",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": "OK",
+		"item": dto,
+	})
+
+}
+
+// CreateTicketPessimisticLock godoc
+// @Summary create a ticket
+// @Schemes
+// @Description create a ticket using pessimistic lock desc
+// @Tags ticket
+// @Produce json
+// @Param flight_id path string true "Flight ID"
+// @Success 201 {object} object{code=string,item=ticketDto}
+// @Router /v1/flights/{flight_id}/tickets/pessimistic [post]
+func (ctrl *TicketV1Controller) CreateTicketPessimisticLock(ctx *gin.Context) {
+	var pathVars CreateTicketUri
+	if err := ctx.ShouldBindUri(&pathVars); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ticket, err := ctrl.BookTicketUc.LogicPessimisticLock(ctx.Request.Context(), pathVars.FlightId)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

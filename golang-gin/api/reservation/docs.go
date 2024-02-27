@@ -111,9 +111,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/flights/{flight_id}/tickets": {
+        "/v1/flights/{flight_id}/tickets/optimistic": {
             "post": {
-                "description": "create a ticket desc",
+                "description": "create a ticket using optimistic lock desc",
                 "produces": [
                     "application/json"
                 ],
@@ -139,7 +139,44 @@ const docTemplate = `{
                                 "code": {
                                     "type": "string"
                                 },
-                                "items": {
+                                "item": {
+                                    "$ref": "#/definitions/controller.ticketDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/flights/{flight_id}/tickets/pessimistic": {
+            "post": {
+                "description": "create a ticket using pessimistic lock desc",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "create a ticket",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Flight ID",
+                        "name": "flight_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "item": {
                                     "$ref": "#/definitions/controller.ticketDto"
                                 }
                             }

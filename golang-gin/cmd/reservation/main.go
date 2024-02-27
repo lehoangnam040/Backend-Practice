@@ -47,15 +47,17 @@ func main() {
 	if err != nil {
 		panic(fmt.Errorf("app - Run - redis.New: %w", err))
 	}
-	redisRepository := redisrepository.New(redis)
+	redisAirportRepository := redisrepository.NewRedisAirportRepository(redis)
+	redisFlightRepository := redisrepository.NewRedisFlightRepository(redis)
 
 	listAirportUc := &usecase.AirportListUc{
 		DbRepo:     pgAirportRepository,
-		SearchRepo: redisRepository,
+		SearchRepo: redisAirportRepository,
 	}
 	bookTicketUc := &usecase.BookTicketUc{
-		FlightDbRepo: pgFlightRepository,
-		TicketDbRepo: pgTicketRepository,
+		FlightDbRepo:       pgFlightRepository,
+		TicketDbRepo:       pgTicketRepository,
+		TicketFlightLocker: redisFlightRepository,
 	}
 
 	// GRPC

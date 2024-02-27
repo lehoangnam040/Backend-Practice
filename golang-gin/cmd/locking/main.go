@@ -30,7 +30,7 @@ func main() {
 
 	pgTicketRepository := postgresrepository.NewPgTicketRepository(pg)
 
-	ticket, err := pgTicketRepository.CreateATicketOfFlightOptimisticLock(context.Background(), "any-id-string", 0)
+	ticket, err := pgTicketRepository.CreateATicketOfFlightOptimisticLock(context.Background(), "any-id-string", 0, 0)
 	if err != nil {
 		panic(err)
 	}
