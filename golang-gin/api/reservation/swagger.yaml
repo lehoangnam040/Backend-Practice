@@ -8,6 +8,13 @@ definitions:
       name:
         type: string
     type: object
+  controller.ticketDto:
+    properties:
+      flight_id:
+        type: string
+      id:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -72,4 +79,28 @@ paths:
       summary: list airports
       tags:
       - airport
+  /v1/flights/{flight_id}/tickets:
+    post:
+      description: create a ticket desc
+      parameters:
+      - description: Flight ID
+        in: path
+        name: flight_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            properties:
+              code:
+                type: string
+              items:
+                $ref: '#/definitions/controller.ticketDto'
+            type: object
+      summary: create a ticket
+      tags:
+      - ticket
 swagger: "2.0"

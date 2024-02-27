@@ -28,9 +28,9 @@ func main() {
 	}
 	defer pg.Close()
 
-	pgFlightRepository := postgresrepository.NewPgFlightRepository(pg)
+	pgTicketRepository := postgresrepository.NewPgTicketRepository(pg)
 
-	ticket, err := pgFlightRepository.CreateATicketOfFlightOptimisticLock(context.Background(), "any-id-string", 0)
+	ticket, err := pgTicketRepository.CreateATicketOfFlightOptimisticLock(context.Background(), "any-id-string", 0)
 	if err != nil {
 		panic(err)
 	}

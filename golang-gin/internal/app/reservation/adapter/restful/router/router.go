@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(gin *gin.Engine, listAirportUc *usecase.AirportListUc) {
+func Setup(gin *gin.Engine, listAirportUc *usecase.AirportListUc, bookTicketUc *usecase.BookTicketUc) {
 
 	public := gin.Group("")
 	NewHealthRouter(public)
@@ -14,4 +14,5 @@ func Setup(gin *gin.Engine, listAirportUc *usecase.AirportListUc) {
 
 	v1 := gin.Group("/v1")
 	NewAirportRouterV1(v1, listAirportUc)
+	NewTicketRouterV1(v1, bookTicketUc)
 }

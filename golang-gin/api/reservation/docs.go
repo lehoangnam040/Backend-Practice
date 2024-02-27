@@ -110,6 +110,43 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/flights/{flight_id}/tickets": {
+            "post": {
+                "description": "create a ticket desc",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "create a ticket",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Flight ID",
+                        "name": "flight_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "items": {
+                                    "$ref": "#/definitions/controller.ticketDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -123,6 +160,17 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.ticketDto": {
+            "type": "object",
+            "properties": {
+                "flight_id": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 }
             }

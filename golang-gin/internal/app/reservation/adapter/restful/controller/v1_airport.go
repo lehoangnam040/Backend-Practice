@@ -46,6 +46,7 @@ func (ctrl *AirportV1Controller) GetList(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": "Error",
 		})
+		return
 	}
 
 	dto := []airportDto{}
@@ -57,6 +58,7 @@ func (ctrl *AirportV1Controller) GetList(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": "Error",
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{

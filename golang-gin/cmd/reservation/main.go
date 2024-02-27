@@ -39,7 +39,9 @@ func main() {
 		panic(fmt.Errorf("app - Run - postgres.New: %w", err))
 	}
 	defer pg.Close()
-	pgRepository := postgresrepository.NewPgAirportRepository(pg)
+	pgAirportRepository := postgresrepository.NewPgAirportRepository(pg)
+	pgFlightRepository := postgresrepository.NewPgFlightRepository(pg)
+	pgTicketRepository := postgresrepository.NewPgTicketRepository(pg)
 
 	redis, err := redis.New(config.Redis.Url(), config.Redis.Pass, config.Redis.Db)
 	if err != nil {
@@ -48,8 +50,12 @@ func main() {
 	redisRepository := redisrepository.New(redis)
 
 	listAirportUc := &usecase.AirportListUc{
-		DbRepo:     pgRepository,
+		DbRepo:     pgAirportRepository,
 		SearchRepo: redisRepository,
+	}
+	bookTicketUc := &usecase.BookTicketUc{
+		FlightDbRepo: pgFlightRepository,
+		TicketDbRepo: pgTicketRepository,
 	}
 
 	// GRPC
@@ -60,7 +66,7 @@ func main() {
 
 	// Rest
 	gin := gin.Default()
-	router.Setup(gin, listAirportUc)
+	router.Setup(gin, listAirportUc, bookTicketUc)
 
 	go func(_grpcServer *grpc.Server) {
 		lis, err := net.Listen("tcp", ":8001")
