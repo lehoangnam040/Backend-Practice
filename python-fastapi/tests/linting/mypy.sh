@@ -1,1 +1,1 @@
-mypy service/ --show-error-codes --config tests/linting/mypy.ini
+mypy src/ --show-error-codes --config tests/linting/mypy.ini

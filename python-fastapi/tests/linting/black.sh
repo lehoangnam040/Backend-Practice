@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-black --check service/
+black --check src/

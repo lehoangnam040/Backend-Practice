@@ -1,1 +1,1 @@
-ruff check service/ --config tests/linting/ruff.toml
+ruff check src/ --config tests/linting/ruff.toml
