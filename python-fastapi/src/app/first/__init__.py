@@ -33,6 +33,9 @@ def global_var() -> AppGlobalVariables:
     return AppGlobalVariables(
         settings=Settings(),
         templates=Jinja2Templates(
-            directory=pathlib.Path().parent / "adapter" / "fastapi" / "templates",
+            directory=pathlib.Path(__file__).parent
+            / "adapter"
+            / "fastapi"
+            / "templates",
         ),
     )

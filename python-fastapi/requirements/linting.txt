@@ -1,5 +1,6 @@
 mypy==1.8.0
 black==24.2.0
 ruff==0.3.0
-sqlalchemy[mypy]==2.0.27
 types-passlib==1.7.7.20240106
+google-auth-stubs==0.2.0
+google-api-python-client-stubs==1.17.0

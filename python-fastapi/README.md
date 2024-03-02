@@ -15,17 +15,10 @@ $ pip install -r requirements/dev.txt
 - Run app with reload to dev
 ```
 $ set -a;source devops/docker/.env.local;set +a
-$ uvicorn service.main:app --reload
+$ uvicorn src.app.first.main:app --reload
 ...
 ```
 
-- Migration DB table
-```
-$ cd devops/db_migration
-$ alembic check
-$ alembic revision --autogenerate -m "..."
-$ alembic upgrade head
-```
 
 ## Test
 

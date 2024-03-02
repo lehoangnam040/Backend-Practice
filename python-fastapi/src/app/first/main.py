@@ -8,7 +8,7 @@ from fastapi import FastAPI
 
 from src import __version__
 from src.app.first import usecases
-from src.app.first.adapter.fastapi import router
+from src.app.first.adapter.fastapi import exceptions, router
 from src.app.first.adapter.postgres import repository as asyncpg_repository
 from src.vendor import databases_asyncpg
 
@@ -32,4 +32,4 @@ async def lifespan(_app: FastAPI) -> typing.AsyncGenerator[None, None]:
 
 
 app = FastAPI(version=__version__, lifespan=lifespan)
-logging.info("App settings %s", global_var().settings)
+exceptions.setup(app)

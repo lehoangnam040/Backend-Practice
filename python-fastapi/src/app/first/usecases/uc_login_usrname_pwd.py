@@ -4,8 +4,10 @@ from typing import Protocol, runtime_checkable
 from pydantic import BaseModel
 
 from src.app.first.entity.account import Account
+from src.error import ServiceError, trace_debugs
+from src.types import ResultWithErr
 
-from .errors import DebugError, ErrorCode, ResultWithErr, ServiceError, trace_debugs
+from .errors import DebugError, ErrorCode
 
 
 class Request(BaseModel):
@@ -89,7 +91,7 @@ class Usecase:
             )
 
         try:
-            return Response.validate(account), None
+            return Response.model_validate(account, from_attributes=True), None
         except Exception:
             linenos = trace_debugs(*sys.exc_info())
             return None, ServiceError(

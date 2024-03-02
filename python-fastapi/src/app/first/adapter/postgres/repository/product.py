@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import typing
 
+from src.app.first.entity.product import ListProduct, Product
+
 if typing.TYPE_CHECKING:
     from databases import Database
-
-    from src.app.first.entity.product import Product
 
 
 class Repository:
@@ -14,20 +14,17 @@ class Repository:
         self.database = database
 
     async def search_products_by_name(
-        self: Repository,
+        self,
         name: str,
         cursor_next: int | None,
     ) -> list[Product]:
-        return []
-        # query = (
-        #     PgProduct.objects.filter(
-        #         product_name__icontains=name,
-        #     )
-        #     .order_by(PgProduct.pid.desc())
-        #     .limit(10)
-        # )
-        # if not cursor_next:
-        #     pg_products = await query.all()
-        # else:
-        #     pg_products = await query.filter(pid__lt=cursor_next).all()
-        # return parse_obj_as(list[Product], pg_products)
+        values: dict[str, typing.Any]
+        if not cursor_next:
+            query = "SELECT * FROM product WHERE product_name ILIKE ('%' || :name || '%') ORDER BY pid DESC LIMIT 10"
+            values = {"name": name}
+        else:
+            query = "SELECT * FROM product WHERE pid < :cursor_next AND product_name ILIKE ('%' || :name || '%') ORDER BY pid DESC LIMIT 10"
+            values = {"name": name, "cursor_next": cursor_next}
+
+        rows = await self.database.fetch_all(query=query, values=values)
+        return ListProduct.validate_python(rows, from_attributes=True)

@@ -15,9 +15,8 @@ class Repository:
         self: "Repository",
         username: str,
     ) -> Account:
-        return None
-        # pg_account = (
-        #     await PgAccount.objects.filter(username=username).limit(1).get_or_none()
-        # )
-        # assert pg_account is not None
-        # return Account.validate(pg_account)
+        rows = await self.database.fetch_one(
+            query="SELECT * FROM account WHERE username = :username LIMIT 10",
+            values={"username": username},
+        )
+        return Account.model_validate(rows, from_attributes=True)

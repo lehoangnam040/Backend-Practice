@@ -3,10 +3,10 @@
 from fastapi import APIRouter
 
 from src.app.first import global_var
-from src.app.first.adapter.fastapi.exceptions import HttpServiceError
 from src.app.first.adapter.fastapi.response import ErrorApiResponse, SingleApiResponse
 from src.app.first.usecases import uc_login_usrname_pwd as uc
 from src.app.first.usecases.errors import ErrorCode
+from src.error import HttpServiceError
 
 router = APIRouter()
 

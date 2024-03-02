@@ -1,6 +1,6 @@
 """Account table to store user's account data."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, TypeAdapter
 
 
 class Product(BaseModel):
@@ -9,3 +9,6 @@ class Product(BaseModel):
     pid: int
     product_name: str
     description: str
+
+
+ListProduct = TypeAdapter(list[Product])

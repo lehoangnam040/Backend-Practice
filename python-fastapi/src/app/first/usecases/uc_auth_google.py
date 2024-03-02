@@ -9,7 +9,12 @@ from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 from pydantic import BaseModel
 
-from .errors import DebugError, ErrorCode, ResultWithErr, ServiceError, trace_debugs
+from src.error import ServiceError, trace_debugs
+
+from .errors import DebugError, ErrorCode
+
+if typing.TYPE_CHECKING:
+    from src.types import ResultWithErr
 
 
 class Response(BaseModel):

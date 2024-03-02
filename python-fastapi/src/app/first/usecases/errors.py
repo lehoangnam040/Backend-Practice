@@ -1,29 +1,6 @@
 from __future__ import annotations
 
 from enum import Enum, StrEnum
-from typing import TYPE_CHECKING, TypeVar
-
-from pydantic import BaseModel
-
-if TYPE_CHECKING:
-    from types import TracebackType
-
-
-def trace_debugs(
-    _: type[BaseException] | None,
-    __: BaseException | None,
-    tb: TracebackType | None,
-) -> str:
-    linenos = []
-    while tb:
-        linenos.append(tb.tb_lineno)
-        tb = tb.tb_next
-    return ".".join(map(str, linenos))
-
-
-class ServiceError(BaseModel):
-    error: Enum
-    debug_id: str
 
 
 class ErrorCode(Enum):
@@ -40,8 +17,3 @@ class DebugError(StrEnum):
     PYDANTIC_VALIDATE_FAILED = "V1001"
     PASSWORD_VERIFY_FAILED = "V1002"
     ERROR_VALIDATE_GOOGLE = "V1003"
-
-
-T = TypeVar("T")
-ResultWithErr = tuple[T | None, ServiceError | None]
-EnumerationT = TypeVar("EnumerationT", bound=type[Enum])
